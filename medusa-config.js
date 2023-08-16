@@ -33,8 +33,11 @@ const DATABASE_URL =
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 
+const SHIPPO_API_KEY = process.env.SHIPPO_API_KEY
+
+const SHIPPO_WEBHOOK_SECRET = process.env.SHIPPO_WEBHOOK_SECRET
+
 const plugins = [
-  `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
   {
     resolve: `@medusajs/file-local`,
@@ -50,6 +53,23 @@ const plugins = [
       autoRebuild: true,
     },
   },
+  {
+    resolve: `medusa-payment-stripe`,
+    options: {
+      api_key: process.env.STRIPE_API_KEY,
+      webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
+    },
+  },
+  {
+    resolve: `medusa-fulfillment-shippo`,
+      options: {
+        api_key: SHIPPO_API_KEY,
+        weight_unit_type: 'g', // valid values: g, kg, lb, oz
+        dimension_unit_type: 'cm', // valid values: cm, mm, in
+        webhook_secret: SHIPPO_WEBHOOK_SECRET, // README section on webhooks before using!
+        webhook_test_mode: true
+      },
+  }
 ];
 
 const modules = {
