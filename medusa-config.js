@@ -38,6 +38,7 @@ const SHIPPO_API_KEY = process.env.SHIPPO_API_KEY
 const SHIPPO_WEBHOOK_SECRET = process.env.SHIPPO_WEBHOOK_SECRET
 
 const plugins = [
+  `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
   {
     resolve: `@medusajs/file-local`,
@@ -60,16 +61,35 @@ const plugins = [
       webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
     },
   },
+  // {
+  //   resolve: `medusa-fulfillment-shippo`,
+  //     options: {
+  //       api_key: SHIPPO_API_KEY,
+  //       weight_unit_type: 'g', // valid values: g, kg, lb, oz
+  //       dimension_unit_type: 'cm', // valid values: cm, mm, in
+  //       webhook_secret: SHIPPO_WEBHOOK_SECRET, // README section on webhooks before using!
+  //       webhook_test_mode: true
+  //     },
+  // },
   {
-    resolve: `medusa-fulfillment-shippo`,
-      options: {
-        api_key: SHIPPO_API_KEY,
-        weight_unit_type: 'g', // valid values: g, kg, lb, oz
-        dimension_unit_type: 'cm', // valid values: cm, mm, in
-        webhook_secret: SHIPPO_WEBHOOK_SECRET, // README section on webhooks before using!
-        webhook_test_mode: true
-      },
-  }
+    resolve: `medusa-payment-paypal`,
+    options: {
+      sandbox: process.env.PAYPAL_SANDBOX,
+      clientId: process.env.PAYPAL_CLIENT_ID,
+      clientSecret: process.env.PAYPAL_CLIENT_SECRET,
+      authWebhookId: process.env.PAYPAL_AUTH_WEBHOOK_ID,
+    },
+  },
+  {
+    resolve: `medusa-file-s3`,
+    options: {
+        s3_url: process.env.S3_URL,
+        bucket: process.env.S3_BUCKET,
+        region: process.env.S3_REGION,
+        access_key_id: process.env.S3_ACCESS_KEY_ID,
+        secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+    },
+  },
 ];
 
 const modules = {
