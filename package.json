@@ -24,6 +24,7 @@
     "build:admin": "cross-env medusa-admin build"
   },
   "dependencies": {
+    "@lambdacurry/medusa-fulfillment-shipstation": "^0.0.35",
     "@medusajs/admin": "^6.0.5",
     "@medusajs/cache-inmemory": "^1.8.7",
     "@medusajs/cache-redis": "^1.8.7",

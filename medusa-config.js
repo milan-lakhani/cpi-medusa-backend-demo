@@ -37,8 +37,20 @@ const SHIPPO_API_KEY = process.env.SHIPPO_API_KEY
 
 const SHIPPO_WEBHOOK_SECRET = process.env.SHIPPO_WEBHOOK_SECRET
 
+const SHIP_STATION_API_KEY = process.env.SHIPSTATION_API
+const SHIP_STATION_SECRET_KEY = process.env.SHIPSTATION_SECRET
+
 const plugins = [
   `medusa-fulfillment-manual`,
+  {
+    resolve: `@lambdacurry/medusa-fulfillment-shipstation`,
+    options: {
+      api_key: SHIP_STATION_API_KEY,
+      api_secret: SHIP_STATION_SECRET_KEY,
+      weight_units: 'ounces', // optional property, valid values are 'ounces', 'pounds', or 'grams'.
+      dimension_units: 'inches' // optional property, valid values are 'centimeters' or 'inches'.
+    }
+  },
   `medusa-payment-manual`,
   {
     resolve: `@medusajs/file-local`,
